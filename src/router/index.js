@@ -3,23 +3,43 @@ import Router from "vue-router";
 
 
 import Login from '../pages/login';
-import LayOut from '../pages/layOut';
+import layout from '../pages/layout';
+import Home from '../pages/home'
+import Goods from '../pages/Goods'
 
 Vue.use(Router);
 
 export default new Router({
-  routes: [
-    {
-      path: "/",
+  routes: [{
+      path: "/login",
       name: "login",
       component: Login,
       // redirect: '/login',
     },
     {
-      path: 'layout',
+      path: '/',
       name: 'layout',
-      component: LayOut
-    }
+      component: layout,
+      redirect: '/home',
+      children: [{
+        path: "/home",
+        component: Home,
+        meta: {
+          title: '首页'
+        }
+      }]
+    },
+    {
+      path: '/goods',
+      component: layout,
+      children: [{
+        path: '/',
+        component: Goods,
+        meta: {
+          title: '商品管理'
+        }
+      }]
+    },
 
   ]
 });
