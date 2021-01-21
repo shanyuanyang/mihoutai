@@ -1,26 +1,35 @@
 <template>
   <div class="header">
     <a href="#/">
-      <img class="logo" src="@/assets/logo.png" width="25px" />
-      <span class="company">梦学谷会员管理系统</span>
+      <img
+        class="logo"
+        src="@/assets/logo.png"
+        width="25px"
+      />
+      <span class="company">小米管理系统</span>
     </a>
 
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        {{ user.name }}<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ userInfo.userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item icon="el-icon-edit" command="a"
-          >修改密码</el-dropdown-item
-        >
-        <el-dropdown-item icon="el-icon-s-fold" command="b"
-          >退出系统</el-dropdown-item
-        >
+        <el-dropdown-item
+          icon="el-icon-edit"
+          command="a"
+        >修改密码</el-dropdown-item>
+        <el-dropdown-item
+          icon="el-icon-s-fold"
+          command="b"
+        >退出系统</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
-    <!-- 修改密码 -->
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogFormVisible"
+      width="400px"
+    >
       <el-form
         :model="ruleForm"
         status-icon
@@ -29,21 +38,30 @@
         label-width="100px"
         style="width: 300px"
       >
-        <el-form-item label="原密码" prop="oldPass">
+        <el-form-item
+          label="原密码"
+          prop="oldPass"
+        >
           <el-input
             type="password"
             v-model="ruleForm.oldPass"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="新密码" prop="pass">
+        <el-form-item
+          label="新密码"
+          prop="pass"
+        >
           <el-input
             type="password"
             v-model="ruleForm.pass"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
+        <el-form-item
+          label="确认密码"
+          prop="checkPass"
+        >
           <el-input
             type="password"
             v-model="ruleForm.checkPass"
@@ -51,9 +69,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >提交</el-button
-          >
+          <el-button
+            type="primary"
+            @click="submitForm('ruleForm')"
+          >提交</el-button>
           <el-button @click="$refs['ruleForm'].resetFields()">重置</el-button>
         </el-form-item>
       </el-form>
@@ -62,15 +81,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { logout } from "@/api/login";
 import passwordApi from "@/api/password";
 
 export default {
+  computed: {
+    ...mapState(["userInfo"]),
+  },
   data() {
     // 在return 上面进行申明自定校验
     const validateOldPass = (rule, value, callback) => {
-      // console.log(this.user.id)
-      passwordApi.checkPwd(this.user.id, value).then((response) => {
+      // console.log(this.userInfo.id)
+      passwordApi.checkPwd(this.userInfo.id, value).then((response) => {
         const resp = response.data;
         if (resp.flag) {
           // 验证通过
@@ -94,7 +117,7 @@ export default {
 
     // 注意:在 return 上面,而上面不能使用 逗号 , 结束
     return {
-      user: this.$store.state.user.user,
+      userInfo: this.$store.state.userInfo,
       dialogFormVisible: false,
       ruleForm: {
         oldPass: "",
@@ -130,7 +153,6 @@ export default {
           break;
       }
     },
-
     // 退出系统
     handleLogout() {
       this.$store.dispatch("Logout").then((response) => {
@@ -147,7 +169,6 @@ export default {
         }
       });
     },
-
     // 打开修改密码窗口
     handlePwd() {
       this.dialogFormVisible = true;
@@ -161,7 +182,7 @@ export default {
         if (valid) {
           console.log("校验成功");
           passwordApi
-            .updatePwd(this.user.id, this.ruleForm.checkPass)
+            .updatePwd(this.userInfo.id, this.ruleForm.checkPass)
             .then((response) => {
               const resp = response.data;
               // 不管失败还是成功,都进行提醒
@@ -169,7 +190,7 @@ export default {
                 message: resp.message,
                 type: resp.flag ? "success" : "warning",
               });
-              3;
+              // 3;
               if (resp.flag) {
                 // 更新成功, 退出系统,回到登录页面
                 this.handleLogout();

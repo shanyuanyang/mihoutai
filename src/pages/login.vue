@@ -38,9 +38,8 @@
   </div>
 </template>
 <script>
-import { login } from "../api/http";
-import { type } from "os";
-
+import { login } from "../api/login";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -57,6 +56,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions({ saveUserInfo: "saveUserInfo" }),
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -64,8 +64,12 @@ export default {
           console.log(userName, password);
           login(userName, password).then((res) => {
             console.log(res);
+            let userInfo = {};
+            userInfo.userName = res.data.userName;
+            userInfo.id = res.data.id;
+            this.saveUserInfo(userInfo)
             this.$message({ message: "登录成功", type: "success" });
-            this.$router.push("/layout");
+            this.$router.push("/");
           });
         } else {
           this.$message({

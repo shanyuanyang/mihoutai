@@ -2,6 +2,7 @@
 <template>
   <div>
     <h2>goods</h2>
+
   </div>
 </template>
 
@@ -9,4 +10,5 @@
 export default {};
 </script>
 <style scoped>
+
 </style>

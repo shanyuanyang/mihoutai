@@ -52,7 +52,7 @@ request.interceptors.response.use(response => {
       duration: 3 * 1000 // 停留时长 
     })
   }
-  return response
+  return response.data
 }, error => {
   loading.close() // 关闭加载效果
   Message({

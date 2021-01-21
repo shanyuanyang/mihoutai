@@ -3,16 +3,16 @@
   <div>
     <nav-header></nav-header>
     <navbar></navbar>
-    <main></main>
+    <container></container>
   </div>
 </template>
 
 <script>
 import NavHeader from "../components/NavHeader";
-import Main from "../components/Main";
+import Container from "../components/Container";
 import Navbar from "../components/Navbar";
 export default {
-  components: { NavHeader, Main, Navbar },
+  components: { NavHeader, Container, Navbar },
 };
 </script>
 <style scoped>
