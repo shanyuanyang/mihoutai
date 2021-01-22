@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { login } from "../api/login";
+import { login } from "../api/login.js";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -64,12 +64,24 @@ export default {
           console.log(userName, password);
           login(userName, password).then((res) => {
             console.log(res);
-            let userInfo = {};
-            userInfo.userName = res.data.userName;
-            userInfo.id = res.data.id;
-            this.saveUserInfo(userInfo)
-            this.$message({ message: "登录成功", type: "success" });
-            this.$router.push("/");
+            if (res.errno == 0) {
+              let userInfo = {};
+              userInfo.userName = res.data.userName;
+              userInfo.id = res.data.id;
+              this.saveUserInfo(userInfo);
+              this.$cookie.set("userId", res.data.id, { expires: "Session" });
+              this.$message({ message: "登录成功", type: "success" });
+              this.$router.push("/");
+              this.$message({
+                message: "登录成功",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                message: `${res.message}`,
+                type: "warning",
+              });
+            }
           });
         } else {
           this.$message({

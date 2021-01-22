@@ -7,3 +7,17 @@ export function login(userName, password) {
     data: { userName, password }
   })
 }
+
+export function getUserInfo() {
+  return request({
+    url: '/api/user/userInfo',
+    method: 'get',
+  })
+}
+
+export function logout() {
+  return request({
+    url: '/api/user/logout',
+    method: 'post',
+  })
+}

@@ -8,15 +8,23 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
+      @open="handleOpen"
+      @close="handleClose"
     >
       <el-menu-item index="/home">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
       </el-menu-item>
-      <el-menu-item index="/goods/">
-        <i class="el-icon-s-goods"></i>
-        <span slot="title">商品管理</span>
-      </el-menu-item>
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-s-goods"></i>
+          <span>商品</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/goodUpload">商品上传</el-menu-item>
+          <el-menu-item index="/goods">商品管理</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -25,6 +33,14 @@
 export default {
   created() {
     // console.log(this.$route.path);
+  },
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
   },
 };
 </script>

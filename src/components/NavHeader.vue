@@ -91,18 +91,19 @@ export default {
   },
   data() {
     // 在return 上面进行申明自定校验
-    const validateOldPass = (rule, value, callback) => {
-      // console.log(this.userInfo.id)
-      passwordApi.checkPwd(this.userInfo.id, value).then((response) => {
-        const resp = response.data;
-        if (resp.flag) {
-          // 验证通过
-          callback();
-        } else {
-          callback(new Error(resp.message));
-        }
-      });
-    };
+    // const validateOldPass = (rule, value, callback) => {
+    //   console.log(this.userInfo.id)
+    //   console.log(value)
+    //   // passwordApi.checkPwd(this.userInfo.id, value).then((response) => {
+    //   //   const resp = response.data;
+    //   //   if (resp.flag) {
+    //   //     // 验证通过
+    //   //     callback();
+    //   //   } else {
+    //   //     callback(new Error(resp.message));
+    //   //   }
+    //   // });
+    // };
 
     // 校验确认密码是否一致
     const validatePass = (rule, value, callback) => {
@@ -117,7 +118,6 @@ export default {
 
     // 注意:在 return 上面,而上面不能使用 逗号 , 结束
     return {
-      userInfo: this.$store.state.userInfo,
       dialogFormVisible: false,
       ruleForm: {
         oldPass: "",
@@ -127,7 +127,7 @@ export default {
       rules: {
         oldPass: [
           { required: true, message: "原密码不能为空", trigger: "blur" },
-          { validator: validateOldPass, trigger: "blur" },
+          // { validator: validateOldPass, trigger: "blur" },
         ],
         pass: [{ required: true, message: "新密码不能为空", trigger: "blur" }],
         checkPass: [
@@ -155,16 +155,21 @@ export default {
     },
     // 退出系统
     handleLogout() {
-      this.$store.dispatch("Logout").then((response) => {
-        if (response.flag) {
-          // 退出成功
-          // 回到登录页面
+      logout().then((res) => {
+        console.log(res);
+        if (res.errno == 0) {
+          this.$cookie.delete("userId");
           this.$router.push("/login");
+          this.$message({
+            message: "退出成功",
+            type: "success",
+            duration: 2000, // 弹出停留时间
+          });
         } else {
           this.$message({
-            message: resp.message,
+            message: res.message,
             type: "warning",
-            duration: 500, // 弹出停留时间
+            duration: 2000, // 弹出停留时间
           });
         }
       });
@@ -181,23 +186,26 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("校验成功");
-          passwordApi
-            .updatePwd(this.userInfo.id, this.ruleForm.checkPass)
-            .then((response) => {
-              const resp = response.data;
-              // 不管失败还是成功,都进行提醒
+          console.log(this.ruleForm);
+          let { oldPass: password, checkPass: newPassword } = this.ruleForm;
+          passwordApi.updatePwd({ password, newPassword }).then((res) => {
+            if (res.errno == 0) {
+              // 更新成功, 退出系统,回到登录页面
+              this.handleLogout();
+              // 关闭窗口
+              this.dialogFormVisible = false;
+              this.$router.push("/login");
               this.$message({
-                message: resp.message,
-                type: resp.flag ? "success" : "warning",
+                message: "修改成功",
+                type: "success",
               });
-              // 3;
-              if (resp.flag) {
-                // 更新成功, 退出系统,回到登录页面
-                this.handleLogout();
-                // 关闭窗口
-                this.dialogFormVisible = false;
-              }
-            });
+            } else {
+              this.$message({
+                message: res.message,
+                type: "warning",
+              });
+            }
+          });
         } else {
           return false;
         }

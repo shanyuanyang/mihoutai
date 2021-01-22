@@ -15,13 +15,13 @@ export default {
   },
 
   // 修改密码userId 用户ID, password 新密码
-  updatePwd(userId, password) {
+  updatePwd(password, newPassword) {
     return request({
-      url: '/user/pwd',
-      method: 'put',
+      url: '/api/user/changePassword',
+      method: 'patch',
       data: {
-        userId,
-        password
+        password,
+        newPassword
       }
     })
   }
