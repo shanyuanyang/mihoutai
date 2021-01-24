@@ -1,11 +1,7 @@
 <template>
   <div class="header">
     <a href="#/">
-      <img
-        class="logo"
-        src="@/assets/logo.png"
-        width="25px"
-      />
+      <img class="logo" src="@/assets/logo.png" width="25px" />
       <span class="company">小米管理系统</span>
     </a>
 
@@ -14,22 +10,16 @@
         {{ userInfo.userName }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-          icon="el-icon-edit"
-          command="a"
-        >修改密码</el-dropdown-item>
-        <el-dropdown-item
-          icon="el-icon-s-fold"
-          command="b"
-        >退出系统</el-dropdown-item>
+        <el-dropdown-item icon="el-icon-edit" command="a"
+          >修改密码</el-dropdown-item
+        >
+        <el-dropdown-item icon="el-icon-s-fold" command="b"
+          >退出系统</el-dropdown-item
+        >
       </el-dropdown-menu>
     </el-dropdown>
 
-    <el-dialog
-      title="修改密码"
-      :visible.sync="dialogFormVisible"
-      width="400px"
-    >
+    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
       <el-form
         :model="ruleForm"
         status-icon
@@ -38,30 +28,21 @@
         label-width="100px"
         style="width: 300px"
       >
-        <el-form-item
-          label="原密码"
-          prop="oldPass"
-        >
+        <el-form-item label="原密码" prop="oldPass">
           <el-input
             type="password"
             v-model="ruleForm.oldPass"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item
-          label="新密码"
-          prop="pass"
-        >
+        <el-form-item label="新密码" prop="pass">
           <el-input
             type="password"
             v-model="ruleForm.pass"
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item
-          label="确认密码"
-          prop="checkPass"
-        >
+        <el-form-item label="确认密码" prop="checkPass">
           <el-input
             type="password"
             v-model="ruleForm.checkPass"
@@ -69,10 +50,9 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitForm('ruleForm')"
-          >提交</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')"
+            >提交</el-button
+          >
           <el-button @click="$refs['ruleForm'].resetFields()">重置</el-button>
         </el-form-item>
       </el-form>
@@ -188,7 +168,7 @@ export default {
           console.log("校验成功");
           console.log(this.ruleForm);
           let { oldPass: password, checkPass: newPassword } = this.ruleForm;
-          passwordApi.updatePwd({ password, newPassword }).then((res) => {
+          passwordApi.updatePwd(password, newPassword).then((res) => {
             if (res.errno == 0) {
               // 更新成功, 退出系统,回到登录页面
               this.handleLogout();
