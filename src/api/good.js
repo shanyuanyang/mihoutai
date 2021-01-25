@@ -33,11 +33,11 @@ export default {
       method: 'delete'
     })
   },
-  update(pojo) {
+  update(id,data) {
     return request({
-      url: `/member/${pojo.id}`, // 反单引号 ``
-      method: 'put', // put 方式提交
-      data: pojo
+      url: `/api/good/updateGood/${id}`, // 反单引号 ``
+      method: 'post', // put 方式提交
+      data: data
     })
   }
 }

@@ -40,6 +40,7 @@
 <script>
 import { login } from "../api/login.js";
 import { mapActions } from "vuex";
+import Cookies from "../utils/cookies";
 export default {
   data() {
     return {
@@ -69,7 +70,8 @@ export default {
               userInfo.userName = res.data.userName;
               userInfo.id = res.data.id;
               this.saveUserInfo(userInfo);
-              this.$cookie.set("userId", res.data.id, { expires: "Session" });
+              // this.$cookie.set("userId", res.data.id, { expires: "Session" });
+              Cookies.setCookie(res.data.id);
               this.$message({ message: "登录成功", type: "success" });
               this.$router.push("/");
               this.$message({

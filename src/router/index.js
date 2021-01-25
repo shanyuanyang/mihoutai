@@ -1,20 +1,23 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-
 import Login from '../pages/login';
 import layout from '../pages/layout';
 import Home from '../pages/home'
 import Goods from '../pages/Goods'
 import GoodUpload from '../pages/goodUpload'
 
+
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [{
     path: "/login",
     name: "login",
     component: Login,
+    meta: {
+      title: '登录'
+    }
     // redirect: '/login',
   },
   {
@@ -56,3 +59,5 @@ export default new Router({
 
   ]
 });
+
+export default router;

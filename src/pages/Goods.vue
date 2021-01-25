@@ -1,30 +1,75 @@
 <!--  -->
 <template>
   <div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="name" label="商品名称" width="150">
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%"
+    >
+      <el-table-column
+        fixed
+        prop="name"
+        label="商品名称"
+        width="150"
+      >
       </el-table-column>
-      <el-table-column prop="subName" label="副标题" width="120">
+      <el-table-column
+        prop="subName"
+        label="副标题"
+        width="120"
+      >
       </el-table-column>
-      <el-table-column prop="introduce" label="介绍" width="300">
+      <el-table-column
+        prop="introduce"
+        label="介绍"
+        width="300"
+      >
       </el-table-column>
-      <el-table-column prop="price" label="单价" width="120"> </el-table-column>
-      <el-table-column prop="stock" label="总库存" width="120">
+      <el-table-column
+        prop="price"
+        label="单价"
+        width="120"
+      > </el-table-column>
+      <el-table-column
+        prop="stock"
+        label="总库存"
+        width="120"
+      >
       </el-table-column>
-      <el-table-column prop="picture" label="图片" width="200">
+      <el-table-column
+        prop="picture"
+        label="图片"
+        width="200"
+      >
       </el-table-column>
-      <el-table-column prop="createdAtFormat" label="创建时间" width="200">
+      <el-table-column
+        prop="createdAtFormat"
+        label="创建时间"
+        width="200"
+      >
       </el-table-column>
-      <el-table-column prop="updatedAtFormat" label="更新时间" width="200">
+      <el-table-column
+        prop="updatedAtFormat"
+        label="更新时间"
+        width="200"
+      >
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100"
+      >
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small"
-            >编辑</el-button
-          >
-          <el-button @click="removeGood(scope.row)" type="text" size="small"
-            >删除</el-button
-          >
+          <el-button
+            @click="handleClick(scope.row)"
+            type="text"
+            size="small"
+          >编辑</el-button>
+          <el-button
+            @click="removeGood(scope.row)"
+            type="text"
+            size="small"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,25 +81,60 @@
       :page-size="5"
     >
     </el-pagination>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
       <span>确认删除商品？</span>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureDeleteGood">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="sureDeleteGood"
+        >确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="更新产品信息"
+      :visible.sync="updateShow"
+      width="30%"
+    >
+      <form-submit
+        :ruleForm="updateData"
+        :flag="true"
+        :uploadPicture="updateData.picture"
+      ></form-submit>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import goodApi from "../api/good";
+import FormSubmit from "../components/formSubmit";
+
 export default {
+  components: {
+    FormSubmit,
+  },
   data() {
     return {
       tableData: [],
       totalCount: 0,
       dialogVisible: false,
+      updateShow: false,
       deleteId: "",
+      updateData: {
+        name: "",
+        subName: "",
+        introduce: "",
+        price: "",
+        stock: "",
+      },
     };
   },
   created() {
@@ -73,10 +153,13 @@ export default {
       let pageIndex = val;
       this.getGoodList(pageIndex);
     },
+    // 修改商品
     handleClick(row) {
       let id = row.id;
+      this.updateShow = true;
       goodApi.getDetail(id).then((res) => {
         console.log(res);
+        this.updateData = res.data;
       });
     },
     // 删除

@@ -6,12 +6,13 @@
 
 <script>
 import { getUserInfo } from "./api/login";
+import Cookies from "./utils/cookies";
 export default {
   name: "app",
   components: {},
   mounted() {},
   created() {
-    if (this.$cookie.get("userId")) {
+    if (Cookies.getCookie("userId")) {
       this.getName();
     }
   },
