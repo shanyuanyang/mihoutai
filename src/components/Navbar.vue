@@ -25,6 +25,14 @@
           <el-menu-item index="/goods">商品管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-menu-item index="/cart">
+        <i class="el-icon-s-shop"></i>
+        <span slot="title">购物车管理</span>
+      </el-menu-item>
+      <el-menu-item index="/order">
+        <i class="el-icon-s-claim"></i>
+        <span slot="title">订单管理</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

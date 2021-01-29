@@ -4,8 +4,11 @@ import Router from "vue-router";
 import Login from '../pages/login';
 import layout from '../pages/layout';
 import Home from '../pages/home'
-import Goods from '../pages/Goods'
-import GoodUpload from '../pages/goodUpload'
+const Goods = () => import('../pages/Goods')
+const GoodUpload = () => import('../pages/goodUpload')
+const Cart = () => import('../pages/cart')
+const Order = () => import('../pages/order')
+
 
 
 Vue.use(Router);
@@ -52,6 +55,28 @@ const router = new Router({
       component: GoodUpload,
       meta: {
         title: '商品上传'
+      }
+    }]
+  },
+  {
+    path: '/cart',
+    component: layout,
+    children: [{
+      path: '/',
+      component: Cart,
+      meta: {
+        title: '购物车管理'
+      }
+    }]
+  },
+  {
+    path: '/order',
+    component: layout,
+    children: [{
+      path: '/',
+      component: Order,
+      meta: {
+        title: '订单管理'
       }
     }]
   },

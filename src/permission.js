@@ -6,7 +6,7 @@ router.beforeEach((to, from, next) => {
     title,
   } = to.meta;
   document.title = title;
-  console.log(Cookies.getCookie("userId"))
+  // console.log(Cookies.getCookie("userId"))
   if (to.path.startsWith('/login')) {
     next()
   } else {
